@@ -28,7 +28,7 @@ public class CuadroMagico4k_v1 {
 
 	// La dimensión de cuadro ha de ser N = 4K
 	static final int DIMEN_BASE = 4;
-	static int Dimen; // Representa el K, que pediremos por teclado
+	//static int Dimen; // Representa el K, que pediremos por teclado
 	static int[][] cuadroInicial;  // array bidimensional con valores del cuadro inicial
 	static int[][] cuadroMagico;  // array bidimensional con el cuadro mágico
 
@@ -97,9 +97,10 @@ public class CuadroMagico4k_v1 {
 	private static void generaCuadroInicial(int n) {
 		cuadroInicial = new int[n][n];
 		int contador = 1;
-		for (int fil = 1; fil <= n; fil++)
-			for (int col = 1; col <= n; col++)
-				cuadroInicial[fil - 1][col - 1] = contador++;
+
+		for (int fil = 0; fil < n; fil++)  // Para cada fila
+			for (int col = 0; col < n; col++)  // Para cada columna de la fila
+				cuadroInicial[fil][col] = contador++;
 
 	}
 
