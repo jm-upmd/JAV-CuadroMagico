@@ -28,7 +28,6 @@ public class CuadroMagico4k_v1 {
 
 	// La dimensión de cuadro ha de ser N = 4K
 	static final int DIMEN_BASE = 4;
-	//static int Dimen; // Representa el K, que pediremos por teclado
 	static int[][] cuadroInicial;  // array bidimensional con valores del cuadro inicial
 	static int[][] cuadroMagico;  // array bidimensional con el cuadro mágico
 
@@ -58,10 +57,12 @@ public class CuadroMagico4k_v1 {
 		// muestraCuadro(cuadroInicial);
 
 		
-		
-		int d4 = dimen / 4;  
-		int d2 = dimen / 2;
-		int d42 = d2 + d4 + 1;
+		// Constantes que contienen las dimensiones de los bloques en que se divide
+		// el cuadro
+
+		final int d4 = dimen / 4;  
+		final int d2 = dimen / 2;
+		final int d42 = d2 + d4 + 1;
 		
 		/* 
 		 * Bloques A,C,G,I son de dimensiónes      d4 filas x d4 columnas
