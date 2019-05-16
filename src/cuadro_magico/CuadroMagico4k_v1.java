@@ -23,13 +23,12 @@ package cuadro_magico;
 
 import java.util.Scanner;
 
-
 public class CuadroMagico4k_v1 {
 
 	// La dimensión de cuadro ha de ser N = 4K
 	static final int DIMEN_BASE = 4;
-	static int[][] cuadroInicial;  // array bidimensional con valores del cuadro inicial
-	static int[][] cuadroMagico;  // array bidimensional con el cuadro mágico
+	static int[][] cuadroInicial; // array bidimensional con valores del cuadro inicial
+	static int[][] cuadroMagico; // array bidimensional con el cuadro mágico
 
 	public static void main(String[] args) {
 		Scanner teclado = new Scanner(System.in);
@@ -38,58 +37,56 @@ public class CuadroMagico4k_v1 {
 		System.out.println("*** Generador de Cuadros Mágicos de dimensión NxN, con N=4K ***\n\n");
 		System.out.println("Introduce el valor de K: ");
 
-		
 		// Pedimos por teclado el valor de K
-		if (teclado.hasNextInt()) {
-			dimen = teclado.nextInt();
-			teclado.close();
-			if (dimen <= 0) {
-				System.out.println("El dato introducido no es un numero entero positivo mayor que cero");
+		if (teclado.hasNextInt() ) {
+			if ( (dimen = teclado.nextInt()) <= 0   ) {
+				System.out.println("K tiene que ser mayor o igual a 1");
+				teclado.close();
 				System.exit(0);
 			}
+		} else {
+			System.out.println("El dato introducido no es un numero entero");
+			teclado.close();
+			System.exit(0);
 		}
 
 		dimen *= DIMEN_BASE; // dimensión del cuadro. cuadro es de dimen * dimen elementos.
 
-
-		// Genera cuadro inicial con valores consecutivos 
+		// Genera cuadro inicial con valores consecutivos
 		generaCuadroInicial(dimen);
 		// muestraCuadro(cuadroInicial);
 
-		
 		// Constantes que contienen las dimensiones de los bloques en que se divide
 		// el cuadro
 
-		final int d4 = dimen / 4;  
+		final int d4 = dimen / 4;
 		final int d2 = dimen / 2;
 		final int d42 = d2 + d4 + 1;
-		
-		/* 
-		 * Bloques A,C,G,I son de dimensiónes      d4 filas x d4 columnas
-		 * Bloques B,H     son de dimensiones      d4 filas x d2 columnas 
-		 * Bloques D,F     son de dimensiones      d2 filas x d4 columnas
-		 * Bloque  E       es de dimensión 		   d2 files x d2 columnas
+
+		/*
+		 * Bloques A,C,G,I son de dimensiónes d4 filas x d4 columnas Bloques B,H son de
+		 * dimensiones d4 filas x d2 columnas Bloques D,F son de dimensiones d2 filas x
+		 * d4 columnas Bloque E es de dimensión d2 files x d2 columnas
 		 */
-		
+
 		// Creamos matriz para el cuadro mágico
 		cuadroMagico = new int[dimen][dimen];
 
-		
 		// Copiamos bloques de cuadro inical al cuadro mágico.
-		
+
 		// Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
-		copiaBloque( 1, 1, d4, d4);  // Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
-		copiaBloque(d42, 1, d4, d4);  
+		copiaBloque(1, 1, d4, d4); // Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
+		copiaBloque(d42, 1, d4, d4);
 		copiaBloque(d4 + 1, d4 + 1, d2, d2);
 		copiaBloque(1, d42, d4, d4);
 		copiaBloque(d42, d42, d4, d4);
 
 		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial
-		
-		copiaBloqueSimetrico(d4 + 1, 1, d4, d2,d4 + 1, d42, d4, d2);  
-		copiaBloqueSimetrico(d4 + 1, d42, d4, d2,d4 + 1, 1, d4, d2);
-		copiaBloqueSimetrico(1, d4 + 1, d2, d4,d42, d4 + 1, d2, d4);
-		copiaBloqueSimetrico(d42, d4 + 1, d2, d4,1, d4 + 1, d2, d4);
+
+		copiaBloqueSimetrico(d4 + 1, 1, d4, d2, d4 + 1, d42, d4, d2);
+		copiaBloqueSimetrico(d4 + 1, d42, d4, d2, d4 + 1, 1, d4, d2);
+		copiaBloqueSimetrico(1, d4 + 1, d2, d4, d42, d4 + 1, d2, d4);
+		copiaBloqueSimetrico(d42, d4 + 1, d2, d4, 1, d4 + 1, d2, d4);
 
 		muestraCuadro(cuadroMagico);
 
@@ -99,8 +96,8 @@ public class CuadroMagico4k_v1 {
 		cuadroInicial = new int[n][n];
 		int contador = 1;
 
-		for (int fil = 0; fil < n; fil++)  // Para cada fila
-			for (int col = 0; col < n; col++)  // Para cada columna de la fila
+		for (int fil = 0; fil < n; fil++) // Para cada fila
+			for (int col = 0; col < n; col++) // Para cada columna de la fila
 				cuadroInicial[fil][col] = contador++;
 
 	}
@@ -137,12 +134,13 @@ public class CuadroMagico4k_v1 {
 
 	}
 
-	// Copia los elementos en orden simétrico del bloque de cuadroOrigen a cuadroDestino
-		// a	b                			 d	 c
-		//          copia simetrica -->
-		// c    d                			 b 	 a
-	
-	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen,  int numFilasOrigen,  int numColOrigen,
+	// Copia los elementos en orden simétrico del bloque de cuadroOrigen a
+	// cuadroDestino
+	// a b d c
+	// copia simetrica -->
+	// c d b a
+
+	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen, int numFilasOrigen, int numColOrigen,
 			int colDestino, int filaDestino, int numFilasDestino, int numColDestino) {
 		int yDest = filaDestino - 1;
 		int xDest = colDestino - 1;
