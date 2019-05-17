@@ -62,7 +62,10 @@ public class CuadroMagico4k_v1 {
 		final int dimMenor = dimen / 4;
 		final int dimMayor = dimen / 2;
 		
+		// Columna  donde comienza bloques más a la derecha  (C,F,G) o fila
+		// donde comienzan bloques más abajo (G, H, I)
 		
+		final int posBloqDerAbaj = dimMayor + dimMenor + 1; 
 
 		/*
 		 * Bloques A,C,G,I son de dimensiónes dimMenor filas x dimMenor columnas Bloques B,H son de
@@ -73,29 +76,31 @@ public class CuadroMagico4k_v1 {
 		// Creamos matriz para el cuadro mágico
 		cuadroMagico = new int[dimen][dimen];
 
+		
 		// Copiamos bloques de cuadro inical al cuadro mágico.
 		
-		// Columna  donde comienza bloques más a la derecha  (C,F,G) o fila
-		// donde comienzan bloques más abajo (G, H, I)
+		// Copia bloques A, C, E, G, I en la misma posición en la matriz cuadromagico.
 		
-		final int posBloqDerAbaj = dimMayor + dimMenor + 1; 
+		//copiaBloque(columna, fila, numFilas, numColumnas)
+	
 
-		copiaBloque(1, 1, dimMenor, dimMenor);   // Bloque A. Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
+		copiaBloque(1, 1, dimMenor, dimMenor);   // Bloque A. Copia bloque que comieza columna 1, fila 1, y tiene dimMenor filas y dimMenor columnas
 		copiaBloque(posBloqDerAbaj, 1, dimMenor, dimMenor); // Bloque C. 
 		copiaBloque(dimMenor + 1, dimMenor + 1, dimMayor, dimMayor);  //Bloque E
 		copiaBloque(1, posBloqDerAbaj, dimMenor, dimMenor); // Bloque G
 		copiaBloque(posBloqDerAbaj, posBloqDerAbaj, dimMenor, dimMenor); // Bloque I
 
 		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial
+		//copiaBloqueSimetrico(colOrigen, filaOrigen, numFilas, numCol,	colDestino, filaDestino)
 
-		// Bloque B
-		copiaBloqueSimetrico(dimMenor + 1, 1, dimMenor, dimMayor, dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor); 
-		// Bloque H
-		copiaBloqueSimetrico(dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor, dimMenor + 1, 1, dimMenor, dimMayor);
-		// Bloque D
-		copiaBloqueSimetrico(1, dimMenor + 1, dimMayor, dimMenor, posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor);
-		// Bloque F
-		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1, dimMayor, dimMenor);
+		// Bloque B a bloque H 
+		copiaBloqueSimetrico(dimMenor + 1, 1, dimMenor, dimMayor, dimMenor + 1, posBloqDerAbaj); 
+		// Bloque H a bloque B
+		copiaBloqueSimetrico(dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor, dimMenor + 1, 1);
+		// Bloque D a bloque F
+		copiaBloqueSimetrico(1, dimMenor + 1, dimMayor, dimMenor, posBloqDerAbaj, dimMenor + 1);
+		// Bloque F a bloque D
+		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1);
 
 		muestraCuadro(cuadroMagico);
 
@@ -151,13 +156,14 @@ public class CuadroMagico4k_v1 {
 	// 						f e
 	//                      b a
 
-	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen, int numFilasOrigen, int numColOrigen,
-			int colDestino, int filaDestino, int numFilasDestino, int numColDestino) {
+	
+	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen, int numFilas, int numCol,
+			int colDestino, int filaDestino) {
 		
 		int yDest = filaDestino - 1;
 		int xDest = colDestino - 1;
-		int yOrg = filaOrigen + numFilasOrigen - 2;
-		int xOrg = colOrigen + numColOrigen - 2;
+		int yOrg = filaOrigen + numFilas - 2;
+		int xOrg = colOrigen + numCol - 2;
 		
 		for (int i = yOrg; i >= filaOrigen - 1; i--) {
 			
