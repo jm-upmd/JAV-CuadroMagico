@@ -46,43 +46,38 @@ public class CuadroMagico4k_v1 {
 				terminar("K tiene que ser mayor o igual que 1");
 			}
 		} else {
-			terminar("El dato introducido no es un numero entero");
-
+			terminar("El dato introducido no es un número entero");
 		}
 
 		dimen *= DIMEN_BASE; // dimensión del cuadro. cuadro es de dimen * dimen elementos.
 
 		// Genera cuadro inicial con valores consecutivos
 		generaCuadroInicial(dimen);
-		// muestraCuadro(cuadroInicial);
 
-		// Constantes que contienen la dimensión mayor y la menor de los bloques en que se divide el cuadro
-		
+		// Constantes que contienen la dimensión mayor y la menor de cada uno de los bloques en que se divide el cuadro
 
 		final int dimMenor = dimen / 4;
 		final int dimMayor = dimen / 2;
 		
-		// Columna  donde comienza bloques más a la derecha  (C,F,G) o fila
+		// Columna donde comienzan bloques más a la derecha  (C,F,G) o fila
 		// donde comienzan bloques más abajo (G, H, I)
 		
 		final int posBloqDerAbaj = dimMayor + dimMenor + 1; 
 
 		/*
-		 * Bloques A,C,G,I son de dimensiónes dimMenor filas x dimMenor columnas Bloques B,H son de
-		 * dimensiones dimMenor filas x dimMayor columnas Bloques D,F son de dimensiones dimMayor filas x
-		 * dimMenor columnas Bloque E es de dimensión dimMayor files x dimMayor columnas
+		 * Bloques A,C,G,I son de dimensiónes dimMenor filas x dimMenor columnas 
+		 * Bloques B,H son de dimensiones dimMenor filas x dimMayor columnas 
+		 * Bloques D,F son de dimensiones dimMayor filas x dimMenor columnas 
+		 * Bloque E es de dimensión dimMayor filas x dimMayor columnas
 		 */
 
 		// Creamos matriz para el cuadro mágico
 		cuadroMagico = new int[dimen][dimen];
 
 		
-		// Copiamos bloques de cuadro inical al cuadro mágico.
-		
-		// Copia bloques A, C, E, G, I en la misma posición en la matriz cuadromagico.
-		
+		// Copiamos bloques de cuadro inical al cuadro mágico.		
+		// Copia bloques A, C, E, G, I en la misma posición en la matriz cuadromagico.		
 		//copiaBloque(columna, fila, numFilas, numColumnas)
-	
 
 		copiaBloque(1, 1, dimMenor, dimMenor);   // Bloque A. Copia bloque que comieza columna 1, fila 1, y tiene dimMenor filas y dimMenor columnas
 		copiaBloque(posBloqDerAbaj, 1, dimMenor, dimMenor); // Bloque C. 
@@ -90,21 +85,23 @@ public class CuadroMagico4k_v1 {
 		copiaBloque(1, posBloqDerAbaj, dimMenor, dimMenor); // Bloque G
 		copiaBloque(posBloqDerAbaj, posBloqDerAbaj, dimMenor, dimMenor); // Bloque I
 
-		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial
+		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial y volteados
+		// horizontal y verticalmente.
 		//copiaBloqueSimetrico(colOrigen, filaOrigen, numFilas, numCol,	colDestino, filaDestino)
 
-		// Bloque B a bloque H 
+		// Bloque B a posición de bloque H 
 		copiaBloqueSimetrico(dimMenor + 1, 1, dimMenor, dimMayor, dimMenor + 1, posBloqDerAbaj); 
-		// Bloque H a bloque B
+		// Bloque H a posición de bloque B
 		copiaBloqueSimetrico(dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor, dimMenor + 1, 1);
-		// Bloque D a bloque F
+		// Bloque D a posición de bloque F
 		copiaBloqueSimetrico(1, dimMenor + 1, dimMayor, dimMenor, posBloqDerAbaj, dimMenor + 1);
-		// Bloque F a bloque D
+		// Bloque F a posición de bloque D
 		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1);
 
+		// Muestra el cuadro mágico por consola
 		muestraCuadro(cuadroMagico);
 
-	}
+	}  // fin main()
 
 	private static void generaCuadroInicial(int n) {
 		cuadroInicial = new int[n][n];
