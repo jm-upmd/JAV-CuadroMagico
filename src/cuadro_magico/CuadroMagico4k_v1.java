@@ -29,25 +29,23 @@ public class CuadroMagico4k_v1 {
 	static final int DIMEN_BASE = 4;
 	static int[][] cuadroInicial; // array bidimensional con valores del cuadro inicial
 	static int[][] cuadroMagico; // array bidimensional con el cuadro mágico
-
+	static Scanner teclado = new Scanner(System.in);
+	
 	public static void main(String[] args) {
-		Scanner teclado = new Scanner(System.in);
+		
 		int dimen = 0;
 
 		System.out.println("*** Generador de Cuadros Mágicos de dimensión NxN, con N=4K ***\n\n");
 		System.out.println("Introduce el valor de K: ");
 
-		// Pedimos por teclado el valor de K
+		// Pedimos por teclado el valor de K y validamos que es un entero mayor que 0.
 		if (teclado.hasNextInt() ) {
 			if ( (dimen = teclado.nextInt()) <= 0   ) {
-				System.out.println("K tiene que ser mayor o igual a 1");
-				teclado.close();
-				System.exit(0);
+				terminar("K tiene que ser mayor o igual que 1");
 			}
 		} else {
-			System.out.println("El dato introducido no es un numero entero");
-			teclado.close();
-			System.exit(0);
+			terminar("El dato introducido no es un numero entero");
+
 		}
 
 		dimen *= DIMEN_BASE; // dimensión del cuadro. cuadro es de dimen * dimen elementos.
@@ -154,6 +152,14 @@ public class CuadroMagico4k_v1 {
 
 		}
 
+	}
+	
+	private static void terminar(String mensaje) {
+		System.out.println(mensaje);
+		System.out.println("Programa finalizado");
+		teclado.close();
+		System.exit(0);
+		
 	}
 
 }
