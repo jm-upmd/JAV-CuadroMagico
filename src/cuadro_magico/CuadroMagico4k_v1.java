@@ -27,8 +27,10 @@ public class CuadroMagico4k_v1 {
 
 	// La dimensión de cuadro ha de ser N = 4K
 	static final int DIMEN_BASE = 4;
+	
 	static int[][] cuadroInicial; // array bidimensional con valores del cuadro inicial
 	static int[][] cuadroMagico; // array bidimensional con el cuadro mágico
+	
 	static Scanner teclado = new Scanner(System.in);
 	
 	public static void main(String[] args) {
@@ -54,37 +56,46 @@ public class CuadroMagico4k_v1 {
 		generaCuadroInicial(dimen);
 		// muestraCuadro(cuadroInicial);
 
-		// Constantes que contienen las dimensiones de los bloques en que se divide
-		// el cuadro
+		// Constantes que contienen la dimensión mayor y la menor de los bloques en que se divide el cuadro
+		
 
-		final int d4 = dimen / 4;
-		final int d2 = dimen / 2;
-		final int d42 = d2 + d4 + 1;
+		final int dimMenor = dimen / 4;
+		final int dimMayor = dimen / 2;
+		
+		
 
 		/*
-		 * Bloques A,C,G,I son de dimensiónes d4 filas x d4 columnas Bloques B,H son de
-		 * dimensiones d4 filas x d2 columnas Bloques D,F son de dimensiones d2 filas x
-		 * d4 columnas Bloque E es de dimensión d2 files x d2 columnas
+		 * Bloques A,C,G,I son de dimensiónes dimMenor filas x dimMenor columnas Bloques B,H son de
+		 * dimensiones dimMenor filas x dimMayor columnas Bloques D,F son de dimensiones dimMayor filas x
+		 * dimMenor columnas Bloque E es de dimensión dimMayor files x dimMayor columnas
 		 */
 
 		// Creamos matriz para el cuadro mágico
 		cuadroMagico = new int[dimen][dimen];
 
 		// Copiamos bloques de cuadro inical al cuadro mágico.
+		
+		// Columna  donde comienza bloques más a la derecha  (C,F,G) o fila
+		// donde comienzan bloques más abajo (G, H, I)
+		
+		final int posBloqDerAbaj = dimMayor + dimMenor + 1; 
 
-		// Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
-		copiaBloque(1, 1, d4, d4); // Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
-		copiaBloque(d42, 1, d4, d4);
-		copiaBloque(d4 + 1, d4 + 1, d2, d2);
-		copiaBloque(1, d42, d4, d4);
-		copiaBloque(d42, d42, d4, d4);
+		copiaBloque(1, 1, dimMenor, dimMenor);   // Bloque A. Copia bloque que comieza in columna 1, fila 1, y tiene d4 filas y d4 columnas
+		copiaBloque(posBloqDerAbaj, 1, dimMenor, dimMenor); // Bloque C. 
+		copiaBloque(dimMenor + 1, dimMenor + 1, dimMayor, dimMayor);  //Bloque E
+		copiaBloque(1, posBloqDerAbaj, dimMenor, dimMenor); // Bloque G
+		copiaBloque(posBloqDerAbaj, posBloqDerAbaj, dimMenor, dimMenor); // Bloque I
 
 		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial
 
-		copiaBloqueSimetrico(d4 + 1, 1, d4, d2, d4 + 1, d42, d4, d2);
-		copiaBloqueSimetrico(d4 + 1, d42, d4, d2, d4 + 1, 1, d4, d2);
-		copiaBloqueSimetrico(1, d4 + 1, d2, d4, d42, d4 + 1, d2, d4);
-		copiaBloqueSimetrico(d42, d4 + 1, d2, d4, 1, d4 + 1, d2, d4);
+		// Bloque B
+		copiaBloqueSimetrico(dimMenor + 1, 1, dimMenor, dimMayor, dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor); 
+		// Bloque H
+		copiaBloqueSimetrico(dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor, dimMenor + 1, 1, dimMenor, dimMayor);
+		// Bloque D
+		copiaBloqueSimetrico(1, dimMenor + 1, dimMayor, dimMenor, posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor);
+		// Bloque F
+		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1, dimMayor, dimMenor);
 
 		muestraCuadro(cuadroMagico);
 
@@ -134,19 +145,27 @@ public class CuadroMagico4k_v1 {
 
 	// Copia los elementos en orden simétrico del bloque de cuadroOrigen a
 	// cuadroDestino
-	// a b d c
-	// copia simetrica -->
-	// c d b a
+	// 						a b 
+	//						e f 
+	// copia simetrica -->  
+	// 						f e
+	//                      b a
 
 	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen, int numFilasOrigen, int numColOrigen,
 			int colDestino, int filaDestino, int numFilasDestino, int numColDestino) {
+		
 		int yDest = filaDestino - 1;
 		int xDest = colDestino - 1;
 		int yOrg = filaOrigen + numFilasOrigen - 2;
 		int xOrg = colOrigen + numColOrigen - 2;
+		
 		for (int i = yOrg; i >= filaOrigen - 1; i--) {
-			for (int j = xOrg; j >= colOrigen - 1; j--)
-				cuadroMagico[yDest][xDest++] = cuadroInicial[i][j];
+			
+			for (int j = xOrg; j >= colOrigen - 1; j--) {
+				cuadroMagico[yDest][xDest] = cuadroInicial[i][j];
+				xDest++;
+			}
+			
 			yDest++;
 			xDest = colDestino - 1;
 
