@@ -169,17 +169,18 @@ public class CuandroMagico_v2 {
 	}
 	
 	/**
-	 * @param f1		primera fila de la submatriz
-	 * @param f2
-	 * @param col1
-	 * @param col2
-	 * @param fd1
-	 * @param fd2
-	 * @param cold1
-	 * @param cold2
-	 * @param mOrg
-	 * @param mDest
+	 * @param f1		primera fila de la submatriz origen
+	 * @param f2		última fila de la submatriz origen
+	 * @param col1		primera columna de la submatriz origen
+	 * @param col2		útima columna de la submatriz origen
+	 * @param fd1	    primera fila de la submatriz destino
+	 * @param fd2       última fila de la submatriz destino
+	 * @param cold1     primera columna de la submatriz destino
+	 * @param cold2     última columna de la submatriz destino
+	 * @param mOrg		matriz origen
+	 * @param mDest     matriz destino
 	 */
+	
 	private static void copiaTranspuesta(int f1,int f2, int col1, int col2, int fd1, int fd2,int cold1,int cold2, 
 			Matrix mOrg, Matrix mDest) {
 		

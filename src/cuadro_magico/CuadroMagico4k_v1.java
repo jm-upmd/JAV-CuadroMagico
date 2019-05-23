@@ -36,25 +36,25 @@ public class CuadroMagico4k_v1 {
 	public static void main(String[] args) {
 
 		int dimen = 0;
+
+		boolean terminar = false;
 		
 		System.out.println("*** Generador de Cuadros Mágicos de dimensión NxN, con N=4K ***\n\n");
-		
-		// Leer valor de k y valida que es un entero mayor que cero.
-		// Si no se le da un valor correcto lo vuelve a pedir 
-		
-		boolean terminar = false;
+
+
 		do {
 			System.out.println("Introduce el valor de K: ");
+			
+
 			// Pedimos por teclado el valor de K y validamos que es un entero mayor que 0.
 			if (teclado.hasNextInt()) {
 				if ((dimen = teclado.nextInt()) <= 0) {
-					System.out.println("K tiene que ser mayor o igual que 1");
-					terminar = false;
-				} else 
-					terminar=true;
+					System.out.println("K tiene que ser un número mayor que cero");
+				} else terminar=true;
 			} else {
-				System.out.println("El dato introducido no es un número entero");
-				teclado.next();  // Leer el valor malo del buffer para sacarlo.
+				System.out.println("k tiene que ser un número entero");
+				
+				teclado.next(); // LEE O SACA EL VALOR INCORRECTO DEL BUFFER
 				
 			}
 			
@@ -90,8 +90,7 @@ public class CuadroMagico4k_v1 {
 		// Copia bloques A, C, E, G, I en la misma posición en la matriz cuadromagico.
 		// copiaBloque(columna, fila, numFilas, numColumnas)
 
-		copiaBloque(1, 1, dimMenor, dimMenor); // Bloque A. Copia bloque que comieza columna 1, fila 1, y tiene dimMenor
-												// filas y dimMenor columnas
+		copiaBloque(1, 1, dimMenor, dimMenor); // Bloque A. Copia bloque que comieza columna 1, fila 1, y tiene dimMenor										// filas y dimMenor columnas
 		copiaBloque(posBloqDerAbaj, 1, dimMenor, dimMenor); // Bloque C.
 		copiaBloque(dimMenor + 1, dimMenor + 1, dimMayor, dimMayor); // Bloque E
 		copiaBloque(1, posBloqDerAbaj, dimMenor, dimMenor); // Bloque G
@@ -113,7 +112,7 @@ public class CuadroMagico4k_v1 {
 		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1);
 
 		// Muestra el cuadro mágico por consola
-		muestraCuadro(cuadroMagico);
+		muestraCuadro(dimen);
 
 	} // fin main()
 
@@ -136,17 +135,19 @@ public class CuadroMagico4k_v1 {
 
 	}
 
-	private static void muestraCuadro(int[][] cuadro) {
-		int n = cuadro[0].length;
+	private static void muestraCuadro(int dim) {
+		//int n = cuadroMagico[0].length;  // 
 
-		for (int fil = 0; fil < n; fil++) {
+		for (int fil = 0; fil < dim; fil++) {
 
 			System.out.println();
-			for (int col = 0; col < n; col++) {
-				System.out.printf("%6d", cuadro[fil][col]);
+			for (int col = 0; col < dim; col++) {
+				System.out.printf("|%6d|", cuadroMagico[fil][col]);
 			}
 		}
 		System.out.println();
+		
+		
 
 	}
 
