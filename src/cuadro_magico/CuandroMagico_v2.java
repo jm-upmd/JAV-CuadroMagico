@@ -24,6 +24,12 @@ public class CuandroMagico_v2 {
 	static final int DIMEN_BASE = 4;
 	static double[][] cuadroInicial;  // array bidimensional con valores del cuadro inicial
 	static double[][] cuadroMagico;  // array bidimensional con el cuadro mágico
+	
+	// Objetos matrix con los que trabajaremos para respresentar los cuadros.
+	// Se instanciarán pasando a sus constructores los arrays anteriores.
+	static Matrix matrizInicial; // objeto matrix que representa el cuadro inicial
+	static Matrix matrizCuadroMagico; // objeto matrix que representa el cuadro mágico final.
+	
 
 
 	public static void main(String[] args) {
@@ -53,20 +59,19 @@ public class CuandroMagico_v2 {
 		
 		// Crea objeto matriz de la librería JAMA con array anterior
 		
-		Matrix matrizInicial = new Matrix(cuadroInicial);
+		matrizInicial = new Matrix(cuadroInicial);
 	
 		
 		// Crea matriz cuadroMagico inicial
 		// Esta matriz inicialmente está rellena con el valor que java asigna 
 		// por defecto al tipo double (un cero).
 		
-		Matrix matrizCuadroMagico = new Matrix(new double[dimen][dimen]);
+		matrizCuadroMagico = new Matrix(new double[dimen][dimen]);
 		
 		
 		final int P = dimen / 4 ;  		// P es la dimensión más Pequeña de los sub-bloques
 		final int G = dimen / 2 ;       // G es la dimensión más Grande de los sub-bloques
-		
-		
+				
 		/* 
 		 * Bloques A,C,G,I son de dimensiónes      P filas x P columnas
 		 * Bloques B,H     son de dimensiones      P filas x G columnas 
@@ -78,44 +83,50 @@ public class CuandroMagico_v2 {
 		// Primera fila y columna comienzan en posición 0
 		
 		// Copia del bloque A desde matrizInicial hasta matrizCuadroMagico
-		matrizCuadroMagico.setMatrix(0,P-1,0,P-1,matrizInicial.getMatrix(0,P-1,0,P-1));
+		copiaBloque(0, P-1, 0, P-1);
 		// Copia del bloque C
-		matrizCuadroMagico.setMatrix(0,P-1,P+G,P+G-1+P,matrizInicial.getMatrix(0,P-1,P+G,P+G-1+P));
+		copiaBloque(0, P-1, P+G, P+G-1+P);
 		// Copia del bloque G 
-		matrizCuadroMagico.setMatrix(P+G,P+G+P-1,0,P-1,matrizInicial.getMatrix(P+G,P+G+P-1,0,P-1));
+		copiaBloque(P+G, P+G+P-1, 0, P-1);
 		// Copia del bloque I
-		matrizCuadroMagico.setMatrix(P+G,P+G+P-1,P+G,P+G+P-1,matrizInicial.getMatrix(P+G,P+G+P-1,P+G,P+G+P-1));
+		copiaBloque(P+G, P+G+P-1, P+G, P+G+P-1);
 		// Copia del bloque E
-		matrizCuadroMagico.setMatrix(P,P+G-1,P,P+G-1,matrizInicial.getMatrix(P,P+G-1,P,P+G-1));
+		copiaBloque(P, P+G-1 ,P , P+G-1);
 
 		
 		// Copia las sub matrices transpuestas... 
 		
 		// Transpone y copia bloque B al H
-		copiaTranspuesta(0,P-1,P,P+G-1,
-				P+G, P+G+P-1,P,P+G-1,
-				matrizInicial,matrizCuadroMagico);
+		copiaTranspuesta(0, P-1,P, P+G-1, P+G, P+G+P-1, P, P+G-1);
 			
 		// Transpone y copia bloque H al B
-		copiaTranspuesta(P+G, P+G+P-1,P, P+G-1,
-				0,P-1,P,P+G-1,
-				matrizInicial,matrizCuadroMagico);
+		copiaTranspuesta(P+G, P+G+P-1, P, P+G-1, 0, P-1, P, P+G-1);
 				
 		// Transpone y copia bloque D al F
-		copiaTranspuesta(P,P+G-1,0,P-1,
-				P,P+G-1,P+G,P+G+P-1,
-				matrizInicial,matrizCuadroMagico);
+		copiaTranspuesta(P, P+G-1, 0, P-1, P, P+G-1, P+G, P+G+P-1);
 				
 		// Transpone y copia bloque F al D
-		copiaTranspuesta(P,P+G-1,P+G,P+G+P-1,
-				P,P+G-1,0,P-1,
-				matrizInicial,matrizCuadroMagico);
+		copiaTranspuesta(P, P+G-1, P+G, P+G+P-1, P, P+G-1, 0, P-1);
 		
 		
 		// Imprime matrizCuadroMagico por consola
 		matrizCuadroMagico.print(6, 0);
 		
 	
+	}
+	
+	/**
+	 * Copia el bloque de dimesiones especificada según los parámetros de entrada, 
+	 * desde el cuadro inicial al cuadro mágico. Los copia en la misma posición y
+	 * orden que están en el cuadro inicial
+	 * 
+	 * @param fIni	posición primera fila del bloque
+	 * @param fFin	posición última fila del bloque
+	 * @param cIni	posición primera columna del bloque
+	 * @param cFin	posición última columna del bloque
+	 */
+	private static void copiaBloque(int fIni, int fFin, int cIni,int cFin) {
+		matrizCuadroMagico.setMatrix(fIni,fFin,cIni,cFin,matrizInicial.getMatrix(fIni,fFin,cIni, cFin));
 	}
 	
 	/**
@@ -169,6 +180,11 @@ public class CuandroMagico_v2 {
 	}
 	
 	/**
+	 * Copia el bloque ubicado en el cuadro inicial,  con ubicación y dimensiones 
+	 * especificados por los primeros cuatro parametros del método.
+	 * La copia la realiza sobre el cuadro mágico en la ubicación especificada por los parámetros quinto
+	 * al octavo del método. Previa a la copia del bloque este es volteado en e plano horizontal y vertical.
+	 * 
 	 * @param f1		primera fila de la submatriz origen
 	 * @param f2		última fila de la submatriz origen
 	 * @param col1		primera columna de la submatriz origen
@@ -177,14 +193,12 @@ public class CuandroMagico_v2 {
 	 * @param fd2       última fila de la submatriz destino
 	 * @param cold1     primera columna de la submatriz destino
 	 * @param cold2     última columna de la submatriz destino
-	 * @param mOrg		matriz origen
-	 * @param mDest     matriz destino
+
 	 */
 	
-	private static void copiaTranspuesta(int f1,int f2, int col1, int col2, int fd1, int fd2,int cold1,int cold2, 
-			Matrix mOrg, Matrix mDest) {
+	private static void copiaTranspuesta(int f1,int f2, int col1, int col2, int fd1, int fd2,int cold1,int cold2) {
 		
-		mDest.setMatrix(fd1,fd2,cold1,cold2,TransponerFilCol(mOrg.getMatrix(f1,f2,col1,col2)));
+		matrizCuadroMagico.setMatrix(fd1,fd2,cold1,cold2,TransponerFilCol(matrizInicial.getMatrix(f1,f2,col1,col2)));
 	}
 	
 	
