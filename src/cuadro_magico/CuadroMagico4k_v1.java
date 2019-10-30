@@ -142,7 +142,7 @@ public class CuadroMagico4k_v1 {
 
 			System.out.println();
 			for (int col = 0; col < dim; col++) {
-				System.out.printf("|%6d|", cuadroMagico[fil][col]);
+				System.out.printf("%6d", cuadroMagico[fil][col]);
 			}
 		}
 		System.out.println();
