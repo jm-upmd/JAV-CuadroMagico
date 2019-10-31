@@ -43,7 +43,7 @@ public class CuadroMagico4k_v1 {
 
 
 		do {
-			System.out.println("Introduce el valor de K: ");
+			System.out.print("Introduce el valor de K: ");
 			
 
 			// Pedimos por teclado el valor de K y validamos que es un entero mayor que 0.
@@ -54,7 +54,7 @@ public class CuadroMagico4k_v1 {
 			} else {
 				System.out.println("k tiene que ser un número entero");
 				
-				teclado.next(); // LEE O SACA EL VALOR INCORRECTO DEL BUFFER
+				teclado.next(); // LEE/SACA EL VALOR INCORRECTO DEL BUFFER
 				
 			}
 			
@@ -71,12 +71,7 @@ public class CuadroMagico4k_v1 {
 		final int dimMenor = dimen / 4;
 		final int dimMayor = dimen / 2;
 
-		// Columna donde comienzan bloques más a la derecha (C,F,G) o fila
-		// donde comienzan bloques más abajo (G, H, I)
-
-		final int posBloqDerAbaj = dimMayor + dimMenor + 1;
-
-		/*
+		/* NOTA:
 		 * Bloques A,C,G,I son de dimensiónes dimMenor filas x dimMenor columnas Bloques
 		 * B,H son de dimensiones dimMenor filas x dimMayor columnas Bloques D,F son de
 		 * dimensiones dimMayor filas x dimMenor columnas Bloque E es de dimensión
@@ -86,33 +81,75 @@ public class CuadroMagico4k_v1 {
 		// Creamos matriz para el cuadro mágico
 		cuadroMagico = new int[dimen][dimen];
 
+		
+		// Constantes que delimitan los bloques
+		// primera fila, ultima fila, primera columna, ultima columna de cada bloque
+		// fil1_A_B_C: primera fila de los bloques A, B y C
+		// col1_A_D_G: primera columna de los bloques A, D, G
+		// . . .
+
+		
+		final int fil1_A_B_C, col1_A_D_G;
+		fil1_A_B_C = col1_A_D_G = 0;
+		
+		final int fil2_A_B_C, col2_A_D_G;
+		fil2_A_B_C = col2_A_D_G = dimMenor -1;
+		
+		final int fil1_D_E_F, col1_B_E_H;
+		fil1_D_E_F = col1_B_E_H = dimMenor;
+		
+		final int fil2_D_E_F, col2_B_E_H;
+		fil2_D_E_F = col2_B_E_H = dimMenor + dimMayor -1;
+		
+		final int fil1_G_H_I, col1_C_F_I;
+		fil1_G_H_I = col1_C_F_I = dimMenor + dimMayor;
+		
+		final int fil2_G_H_I, col2_C_F_I;
+		fil2_G_H_I = col2_C_F_I = (2 * dimMenor) + dimMayor -1;
+		
 		// Copiamos bloques de cuadro inical al cuadro mágico.
 		// Copia bloques A, C, E, G, I en la misma posición en la matriz cuadromagico.
-		// copiaBloque(columna, fila, numFilas, numColumnas)
+		
+		//imprimeMatriz(cuadroInicial);
+		
+		ponMatriz(extraeMatriz(fil1_A_B_C, col1_A_D_G, fil2_A_B_C, col2_A_D_G, cuadroInicial), 
+				cuadroMagico, fil1_A_B_C, col1_A_D_G); //Bloq A
+		
+		ponMatriz(extraeMatriz(fil1_A_B_C, col1_C_F_I, fil2_A_B_C, col2_C_F_I, cuadroInicial),
+				cuadroMagico,fil1_A_B_C, col1_C_F_I); //Bloq C
+		
+		ponMatriz(extraeMatriz(fil1_D_E_F, col1_B_E_H, fil2_D_E_F, col2_B_E_H, cuadroInicial),
+				cuadroMagico,fil1_D_E_F, col1_B_E_H); //Bloq E
+		
+		ponMatriz(extraeMatriz(fil1_G_H_I, col1_A_D_G, fil2_G_H_I, col2_A_D_G, cuadroInicial),
+				cuadroMagico,fil1_G_H_I, col1_A_D_G); //Bloq G
+		
+		ponMatriz(extraeMatriz(fil1_G_H_I, col1_C_F_I, fil2_G_H_I, col2_C_F_I, cuadroInicial),
+				cuadroMagico,fil1_G_H_I, col1_C_F_I); //Bloq I
 
-		copiaBloque(1, 1, dimMenor, dimMenor); // Bloque A. Copia bloque que comieza columna 1, fila 1, y tiene dimMenor										// filas y dimMenor columnas
-		copiaBloque(posBloqDerAbaj, 1, dimMenor, dimMenor); // Bloque C.
-		copiaBloque(dimMenor + 1, dimMenor + 1, dimMayor, dimMayor); // Bloque E
-		copiaBloque(1, posBloqDerAbaj, dimMenor, dimMenor); // Bloque G
-		copiaBloque(posBloqDerAbaj, posBloqDerAbaj, dimMenor, dimMenor); // Bloque I
-
+				
 		// Copia a cuadroMagico los bloques B,H,D,F simetricos respecto a cuadroInicial
-		// y volteados
-		// horizontal y verticalmente.
-		// copiaBloqueSimetrico(colOrigen, filaOrigen, numFilas, numCol, colDestino,
-		// filaDestino)
+		// y volteados horizontal y verticalmente.
 
-		// Bloque B a posición de bloque H
-		copiaBloqueSimetrico(dimMenor + 1, 1, dimMenor, dimMayor, dimMenor + 1, posBloqDerAbaj);
-		// Bloque H a posición de bloque B
-		copiaBloqueSimetrico(dimMenor + 1, posBloqDerAbaj, dimMenor, dimMayor, dimMenor + 1, 1);
-		// Bloque D a posición de bloque F
-		copiaBloqueSimetrico(1, dimMenor + 1, dimMayor, dimMenor, posBloqDerAbaj, dimMenor + 1);
-		// Bloque F a posición de bloque D
-		copiaBloqueSimetrico(posBloqDerAbaj, dimMenor + 1, dimMayor, dimMenor, 1, dimMenor + 1);
+		// Bloq B volteado y puesto en el H
+		ponMatriz(rotaMatrizHV(extraeMatriz(fil1_A_B_C, col1_B_E_H, fil2_A_B_C, col2_B_E_H, cuadroInicial)),
+				cuadroMagico,fil1_G_H_I,col1_B_E_H);
+		
+		//Bloq H volteado y puesto en el B		
+		ponMatriz(rotaMatrizHV(extraeMatriz(fil1_G_H_I, col1_B_E_H, fil2_G_H_I, col2_B_E_H, cuadroInicial)),
+				cuadroMagico,fil1_A_B_C,col1_B_E_H);
+
+		//Bloq D volteado y puesto en el F		
+		ponMatriz(rotaMatrizHV(extraeMatriz(fil1_D_E_F, col1_A_D_G, fil2_D_E_F, col2_A_D_G, cuadroInicial)),
+				cuadroMagico,fil1_D_E_F,col1_C_F_I);
+		
+		//Bloq F volteado y puesto en el D		
+		ponMatriz(rotaMatrizHV(extraeMatriz(fil1_D_E_F, col1_C_F_I, fil2_D_E_F, col2_C_F_I, cuadroInicial)),
+				cuadroMagico,fil1_D_E_F,col1_A_D_G);
+		
 
 		// Muestra el cuadro mágico por consola
-		muestraCuadro(dimen);
+		imprimeMatriz(cuadroMagico);
 
 	} // fin main()
 
@@ -125,77 +162,102 @@ public class CuadroMagico4k_v1 {
 				cuadroInicial[fil][col] = contador++;
 
 	}
-
-	// Otra forma de rellenar el cuadro con valores consecutivos
-	private static void generaCuadroInicialV2(int n) {
-		cuadroInicial = new int[n][n];
-		for (int fil = 1; fil <= n; fil++)
-			for (int col = 1; col <= n; col++)
-				cuadroInicial[fil - 1][col - 1] = col + (n * (fil - 1));
-
-	}
-
-	private static void muestraCuadro(int dim) {
-		//int n = cuadroMagico[0].length;  // 
-
-		for (int fil = 0; fil < dim; fil++) {
-
-			System.out.println();
-			for (int col = 0; col < dim; col++) {
-				System.out.printf("%6d", cuadroMagico[fil][col]);
+	
+	//*** Operaciones con matrices
+	
+	static int[][] rotaMatrizH(int [][]m){
+		
+		if(m == null) return null;
+		
+		int nFil = m.length;      // Número de filas
+		
+		// Número de columnas. Como es matriz regular podemos saberlo obtenido el número de filas de la 
+		// del array que representa la primera fila {1,2,3}
+		int nCol = m[0].length;   
+		
+		int[][] mR = new int[nFil][nCol];
+		
+		for (int fil = 0; fil < nFil; fil++) {    // para cada fila
+			int colDerecha = nCol;
+			
+			for(int col = 0; col < nCol; col++)  { // para cada columna
+				mR[fil][colDerecha - 1] = m[fil][col];
+				colDerecha--;
 			}
 		}
-		System.out.println();
-		
-		
-
+		return mR;
 	}
-
-	// Copia los elementos del bloque de cuadroOrigen a cuadroDestino
-	private static void copiaBloque(int columna, int fila, int numFilas, int numColumnas) {
-
-		for (int i = fila; i <= fila + numFilas - 1; i++)
-			for (int j = columna; j <= columna + numColumnas - 1; j++)
-				cuadroMagico[i - 1][j - 1] = cuadroInicial[i - 1][j - 1];
-
-	}
-
-	// Copia los elementos en orden simétrico del bloque de cuadroOrigen a
-	// cuadroDestino
-	// a b
-	// e f
-	// copia simetrica -->
-	// f e
-	// b a
-
-	private static void copiaBloqueSimetrico(int colOrigen, int filaOrigen, int numFilas, int numCol, int colDestino,
-			int filaDestino) {
-
-		int yDest = filaDestino - 1;
-		int xDest = colDestino - 1;
-		int yOrg = filaOrigen + numFilas - 2;
-		int xOrg = colOrigen + numCol - 2;
-
-		for (int i = yOrg; i >= filaOrigen - 1; i--) {
-
-			for (int j = xOrg; j >= colOrigen - 1; j--) {
-				cuadroMagico[yDest][xDest] = cuadroInicial[i][j];
-				xDest++;
+		
+	static int[][] rotaMatrizV(int [][]m){
+		
+		int nFil = m.length;
+		int nCol = m[0].length;
+		int[][] mR = new int[nFil][nCol];
+				
+		for (int col = 0; col < nCol; col++) {    // para cada columna
+			int filAbajo = nFil;
+			
+			for(int fil = 0; fil < nFil; fil++)  { // para cada fila
+				mR[filAbajo - 1][col] = m[fil][col];
+				filAbajo--;
 			}
-
-			yDest++;
-			xDest = colDestino - 1;
-
 		}
-
+		return mR;
 	}
-
-	private static void terminar(String mensaje) {
-		System.out.println(mensaje);
-		System.out.println("Programa finalizado");
-		teclado.close();
-		System.exit(0);
-
+	
+	static int[][] rotaMatrizHV(int[][] m){
+		return(rotaMatrizH(rotaMatrizV(m)));
+	}
+	
+	
+	
+	static int[][] extraeMatriz(int filDesde, int colDesde, int filHasta, int colHasta, int[][] m){
+		if(m == null) return null;
+		if (filDesde > filHasta || filHasta > m.length - 1) return null;
+		if(colDesde > colHasta || colHasta > m[0].length) return null;
+		
+		int nFilas = filHasta - filDesde + 1;
+		int nCols = colHasta - colDesde + 1;
+		
+		int[][] mR = new int[nFilas][nCols];
+		
+		for (int i = filDesde; i <= filHasta; i++) {
+			for (int j = colDesde; j <= colHasta; j++) {
+				mR[i-filDesde][j-colDesde] = m[i][j] ;
+			}
+		}
+		return mR;
+	}
+	
+	// coloca la matriz m1 dentro de la matriz m2 en las coordenadas indicadas
+	// devuelve -1 si no se ha podido colocar la matriz y 1 en caso contrario
+	static boolean ponMatriz(int[][] mOrg, int[][] mDest, int fila, int col) {
+		if (mOrg == null) return false;
+		
+		int filsOrg = fila + mOrg.length;
+		int colsOrg = col + mOrg[0].length;
+		
+		// Coordenada fuera de rango
+		if (filsOrg > mDest.length || colsOrg > mDest[0].length )
+			return false;
+		
+		for (int i = fila; i < filsOrg; i++) {
+			for (int j = col; j < colsOrg; j++) {
+				mDest[i][j]= mOrg[i-fila][j-col]; 
+			}
+		}
+		
+		return true;
+	}
+	
+	static void imprimeMatriz(int [][] m) {
+		for (int[] is : m) {
+			for (int n : is) {
+				System.out.printf("%6d", n);
+			}
+			System.out.printf("\n");
+		}
+		System.out.printf("\n\n");
 	}
 
 }
