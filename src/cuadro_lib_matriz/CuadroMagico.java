@@ -1,7 +1,8 @@
 /* Versión que utiliza la librería matrizJMD.jar 
  * implementada como ejemplo para el curso.
  * El código fuente de esta librería esta también disponible
- * en github
+ * en github:
+ * https://github.com/jm-upmd/JAVA-LibreriaMatriz.git
  */
 
 package cuadro_lib_matriz;
