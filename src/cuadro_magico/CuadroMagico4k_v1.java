@@ -23,6 +23,7 @@ package cuadro_magico;
 
 import java.util.Scanner;
 
+
 public class CuadroMagico4k_v1 {
 
 	// La dimensión de cuadro ha de ser N = 4K
@@ -143,6 +144,7 @@ public class CuadroMagico4k_v1 {
 		imprimeMatriz(cuadroMagico);
 
 	} // fin main()
+	
 
 	private static void generaCuadroInicial(int n) {
 		cuadroInicial = new int[n][n];
@@ -217,7 +219,7 @@ public class CuadroMagico4k_v1 {
 		return mR;
 	}
 	
-	// coloca la matriz m1 dentro de la matriz m2 en las coordenadas indicadas
+	// coloca la matriz mOrg dentro de la matriz mDest en las coordenadas indicadas
 	// devuelve -1 si no se ha podido colocar la matriz y 1 en caso contrario
 	static boolean ponMatriz(int[][] mOrg, int[][] mDest, int fila, int col) {
 		if (mOrg == null) return false;
@@ -239,13 +241,34 @@ public class CuadroMagico4k_v1 {
 	}
 	
 	static void imprimeMatriz(int [][] m) {
+		
+		// Ancho del último elemento de la matriz + 2
+		int ancho = longNumero(mayor(m)) + 2;
+		
+		String cadFormat = "%" + String.valueOf(ancho) + "d";
 		for (int[] is : m) {
 			for (int n : is) {
-				System.out.printf("%6d", n);
+				System.out.printf(cadFormat, n);
 			}
 			System.out.printf("\n");
 		}
 		System.out.printf("\n\n");
+	}
+	
+	static int longNumero (int n) {
+		
+		return String.valueOf(n).length();
+		
+	}
+	
+	static int mayor(int[][] m) {
+		int mayor = 0;
+		for(int[] fil: m)
+			for(int n: fil)
+				mayor = n > mayor ? n : mayor;
+		
+		return mayor;
+		
 	}
 	
 }
